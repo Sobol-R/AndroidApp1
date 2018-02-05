@@ -1,14 +1,21 @@
 package com.example.user.androidproj1;
 
+import android.inputmethodservice.Keyboard;
+import android.support.design.widget.Snackbar;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.w3c.dom.Text;
 
@@ -63,8 +70,52 @@ public class MainActivity extends AppCompatActivity {
         });
 
         //TextView showPassword = findViewById(R.id.)
+        loginButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+               // Toast.makeText(MainActivity.this, "вы не ввели ваш логин", Toast.LENGTH_LONG).show();
+                final Snackbar snack = Snackbar.make(loginButton, "Wrong password or Login", Snackbar.LENGTH_LONG);
+                snack.show();
+                clear();
+                snack.setAction("Hide", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        snack.dismiss();
+                    }
+                });
+            }
+        });
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setHomeAsUpIndicator(R.drawable.ic_motorcycle_black_24dp);
+        actionBar.setTitle("title");
+        actionBar.setSubtitle("subtitle");
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater menuInflater = getMenuInflater();
+        menuInflater.inflate(R.menu.login_activitu_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.about :
+                return true;
+            case  R.id.exit :
+                finish();
+                return true;
+                default: return false;
+        }
+    }
+
+    private void clear() {
+        userName.getText().clear();
+        password.getText().clear();
+    }
     private void checkUserName() {
         if (!TextUtils.isEmpty(userName.getText())) {
             password.setVisibility(View.VISIBLE);
