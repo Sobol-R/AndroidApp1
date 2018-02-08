@@ -12,8 +12,11 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -23,18 +26,20 @@ public class MainActivity extends AppCompatActivity {
     EditText userName;
     EditText password;
     Button loginButton;
-
+    RelativeLayout relativeLayout;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         initialize();
+        initializeAnimation();
     }
     private void initialize() {
         //находим тектовое поля кнопку
         userName = findViewById(R.id.username);
         password = findViewById(R.id.password);
         loginButton = findViewById(R.id.loginButton);
+        relativeLayout = findViewById(R.id.mainLayout);
         userName.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2){
@@ -111,7 +116,18 @@ public class MainActivity extends AppCompatActivity {
                 default: return false;
         }
     }
-
+    private void initializeAnimation() {
+        Animation animation = AnimationUtils.loadAnimation(MainActivity.this, android.R.anim.slide_in_left);
+        animation.setDuration(1000);
+        animation.setStartOffset(500);
+        relativeLayout.startAnimation(animation);
+    }
+    private void setLoginButtonAnim() {
+        Animation animation = AnimationUtils.loadAnimation(MainActivity.this, android.R.anim.slide_in_left);
+        animation.setDuration(1000);
+        animation.setStartOffset(500);
+        loginButton.startAnimation(animation);
+    }
     private void clear() {
         userName.getText().clear();
         password.getText().clear();
@@ -125,6 +141,7 @@ public class MainActivity extends AppCompatActivity {
     private void check() {
         if (!TextUtils.isEmpty(userName.getText()) && !TextUtils.isEmpty(password.getText())) {
             loginButton.setEnabled(true);
+            setLoginButtonAnim();
         } else {
             loginButton.setEnabled(false);
         }
